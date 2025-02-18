@@ -1,10 +1,32 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { UserHomeScreen, NewsListScreen, SettingScreen } from '@src/screens';
+import { HomeScreen, NewsListScreen, SettingScreen } from '@src/screens';
 import { TabScreen, UserTabParamList } from '../appNavigation.type';
 
 const Tab = createBottomTabNavigator<UserTabParamList>();
+const HomeStack = createNativeStackNavigator();
+const NewsStack = createNativeStackNavigator();
+const ProfileStack = createNativeStackNavigator();
+
+const HomeStackScreen = () => (
+  <HomeStack.Navigator screenOptions={{ headerShown: false }}>
+    <HomeStack.Screen name="HomeMain" component={HomeScreen} />
+  </HomeStack.Navigator>
+);
+
+const NewsStackScreen = () => (
+  <NewsStack.Navigator screenOptions={{ headerShown: false }}>
+    <NewsStack.Screen name="NewsMain" component={NewsListScreen} />
+  </NewsStack.Navigator>
+);
+
+const ProfileStackScreen = () => (
+  <ProfileStack.Navigator screenOptions={{ headerShown: false }}>
+    <ProfileStack.Screen name="ProfileMain" component={SettingScreen} />
+  </ProfileStack.Navigator>
+);
 
 export const UserTabs = () => {
   return (
@@ -17,7 +39,7 @@ export const UserTabs = () => {
     >
       <Tab.Screen
         name={TabScreen.HOME}
-        component={UserHomeScreen}
+        component={HomeStackScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Icon name="home" size={size} color={color} />
@@ -26,7 +48,7 @@ export const UserTabs = () => {
       />
       <Tab.Screen
         name={TabScreen.NEWS}
-        component={NewsListScreen}
+        component={NewsStackScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Icon name="newspaper" size={size} color={color} />
@@ -35,7 +57,7 @@ export const UserTabs = () => {
       />
       <Tab.Screen
         name={TabScreen.PROFILE}
-        component={SettingScreen}
+        component={ProfileStackScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Icon name="account" size={size} color={color} />

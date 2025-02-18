@@ -9,3 +9,4 @@ export * from './debug/NetworkLoggerScreen';
 
 export { AdminHomeScreen } from './admin/AdminHomeScreen';
 export { ManagerHomeScreen } from './manager/ManagerHomeScreen';
+export { HomeScreen } from './user/HomeScreen';
