@@ -5,15 +5,25 @@ import { PersistGate } from 'redux-persist/integration/react';
 import store, { persistor } from './store';
 import { AppNavigation } from './navigation/AppNavigation';
 
+
+
 const App = () => {
+
+ 
   return (
+   
     <Provider store={store}>
+      
+
       <PersistGate loading={null} persistor={persistor}>
         <SafeAreaProvider>
           <AppNavigation />
         </SafeAreaProvider>
       </PersistGate>
+     
+
     </Provider>
+   
   );
 };
 

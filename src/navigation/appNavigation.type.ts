@@ -9,8 +9,9 @@ export enum Screen {
   NEWS_DETAIL = 'NEWS_DETAIL',
   NEWS_LIST = 'NEWS_LIST',
   SETTING = 'SETTING',
-  LOGIN = 'Login',
-  SIGNUP = 'SIGNUP',
+  LOGIN = 'SignIn',
+  SIGNUP = 'SignUp',
+  SELECTION = 'Selection',
   USER_HOME = 'UserHome',
   MANAGER_HOME = 'ManagerHome',
   ADMIN_HOME = 'AdminHome',
@@ -39,6 +40,10 @@ export type NewsDetailRoute = RouteProp<NavStackParams, Screen.NEWS_DETAIL>;
 
 export enum TabScreen {
   HOME = 'Home',
+  CALENDAR = 'Calendar',
+  LOVE = 'Love',
+  USER = 'User',
+  SETTING = 'Setting',
   NEWS = 'News',
   SETTINGS = 'Settings',
   USERS = 'Users',

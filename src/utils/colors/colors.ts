@@ -1,0 +1,21 @@
+export const dark = {};
+export const light = {
+  white: "#fff",
+  congressBlue: "#015090",
+  rubyRed: "#EA2227",
+  darkRedNew: "#900103",
+  darkRed: "#401C1D",
+  bodyText: "#838383",
+  background: "#F8F8F8",
+  borderColor: "#242760",
+  forgot: "#363130",
+  buttonText: "#1E293B",
+  black: "#000",
+  drawerText: "#0F0F0F",
+  ruler: "#e2e4e5",
+  backgroundUser: "#D9D9D9",
+  darkGrey: "#787880",
+  greyNew: "#BDBDBD",
+  textInput: "#e8e8e8",
+  darkBack: "#EEEEEE",
+};

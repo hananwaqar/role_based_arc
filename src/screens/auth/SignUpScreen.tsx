@@ -1,65 +1,25 @@
-import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  ActivityIndicator,
-  Alert,
-  Image,
-} from 'react-native';
-import { useDispatch } from 'react-redux';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
-import { setAuthenticated, setUserRole, setUser } from '@src/store';
-import { loginAPI } from '@src/services/api/auth';
-import CheckBox from '@react-native-community/checkbox';
+import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import CheckBox from '@react-native-community/checkbox';
 import { IconComponent } from '@src/components/IconComponent';
 import { Icons } from '@src/assets';
 
-export const SignInScreen = ({ navigation }) => {
+const SignUpScreen = () => {
+  const navigation = useNavigation();
   const { control, handleSubmit } = useForm();
-  const [loading, setLoading] = React.useState(false);
-  const dispatch = useDispatch();
-  const [rememberMe, setRememberMe] = React.useState(false);
+  const [agreeToTerms, setAgreeToTerms] = useState(false);
 
-  const onSubmit = async data => {
-    if (!data.username || !data.password) {
-      Alert.alert('Error', 'Please enter both username and password');
-      return;
-    }
-    setLoading(true);
-    try {
-      const response = await loginAPI({
-        username: data.username,
-        password: data.password,
-      });
-      dispatch(
-        setUser({
-          id: response.user.id,
-          username: response.user.username,
-          email: response.user.email,
-        })
-      );
-      dispatch(setUserRole(response.user.role));
-      dispatch(setAuthenticated(true));
-    } catch (error) {
-      Alert.alert(
-        'Login Failed',
-        'Invalid credentials. Try:\nadmin/admin123\nmanager/manager123\nuser/user123'
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
+  const onSubmit = data => console.log(data);
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome to</Text>
       <Text style={styles.subtitle}>Paloma Beauty World</Text>
-      <Text style={styles.description}>Enter your information</Text>
-      
+      <Text style={styles.description}>Create Account</Text>
+
       <Controller
         control={control}
         name="username"
@@ -68,15 +28,32 @@ export const SignInScreen = ({ navigation }) => {
             <Icon name="account-outline" size={24} color="#666" style={styles.inputIcon} />
             <TextInput
               style={styles.input}
-              placeholder="Username or Email"
-              onChangeText={onChange}
+              placeholder="Enter Username"
               value={value}
+              onChangeText={onChange}
+            />
+          </View>
+        )}
+      />
+
+      <Controller
+        control={control}
+        name="email"
+        render={({ field: { onChange, value } }) => (
+          <View style={styles.inputContainer}>
+            <Icon name="email-outline" size={24} color="#666" style={styles.inputIcon} />
+            <TextInput
+              style={styles.input}
+              placeholder="Enter Email"
+              value={value}
+              onChangeText={onChange}
+              keyboardType="email-address"
               autoCapitalize="none"
             />
           </View>
         )}
       />
-      
+
       <Controller
         control={control}
         name="password"
@@ -85,39 +62,46 @@ export const SignInScreen = ({ navigation }) => {
             <Icon name="lock-outline" size={24} color="#666" style={styles.inputIcon} />
             <TextInput
               style={styles.input}
-              placeholder="Password"
-              onChangeText={onChange}
-              value={value}
+              placeholder="Enter Password"
               secureTextEntry
+              value={value}
+              onChangeText={onChange}
             />
           </View>
         )}
       />
 
-      <View style={styles.optionsContainer}>
-        <View style={styles.checkboxContainer}>
-          <CheckBox
-            value={rememberMe}
-            onValueChange={setRememberMe}
-            tintColors={{ true: '#E84B8A', false: '#666' }}
-            style={styles.checkbox}
-          />
-          <Text style={styles.checkboxLabel}>Save my information</Text>
-        </View>
-        <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
-          <Text style={styles.forgotPassword}>Forgot password?</Text>
-        </TouchableOpacity>
+      <Controller
+        control={control}
+        name="confirmPassword"
+        render={({ field: { onChange, value } }) => (
+          <View style={styles.inputContainer}>
+            <Icon name="lock-outline" size={24} color="#666" style={styles.inputIcon} />
+            <TextInput
+              style={styles.input}
+              placeholder="Confirm Password"
+              secureTextEntry
+              value={value}
+              onChangeText={onChange}
+            />
+          </View>
+        )}
+      />
+
+      <View style={styles.termsContainer}>
+        <CheckBox
+          value={agreeToTerms}
+          onValueChange={setAgreeToTerms}
+          tintColors={{ true: '#E84B8A', false: '#666' }}
+          style={styles.checkbox}
+        />
+        <Text style={styles.termsText}>
+          Agree with <Text style={styles.termsLink}>Terms</Text> and <Text style={styles.termsLink}>Services</Text>
+        </Text>
       </View>
 
-      <TouchableOpacity
-        style={[styles.button, loading && styles.buttonDisabled]}
-        onPress={handleSubmit(onSubmit)}
-        disabled={loading}>
-        {loading ? (
-          <ActivityIndicator color="white" />
-        ) : (
-          <Text style={styles.buttonText}>Sign in</Text>
-        )}
+      <TouchableOpacity style={styles.signUpButton} onPress={handleSubmit(onSubmit)}>
+        <Text style={styles.signUpButtonText}>Sign up</Text>
       </TouchableOpacity>
 
       <Text style={styles.orText}>Or</Text>
@@ -131,14 +115,14 @@ export const SignInScreen = ({ navigation }) => {
         <IconComponent icon={Icons.facebook} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.socialButton}>
-        <IconComponent icon={Icons.instagram} />
+        <IconComponent icon={Icons.google} />
         </TouchableOpacity>
       </View>
 
       <View style={styles.footer}>
-        <Text style={styles.footerText}>Don't have an account? </Text>
-        <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-          <Text style={styles.signupLink}>Sign up</Text>
+        <Text style={styles.footerText}>Already have an account? </Text>
+        <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
+          <Text style={styles.signInLink}>Sign in</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -183,31 +167,26 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
   },
-  optionsContainer: {
+  termsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 24,
-  },
-  checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
   },
   checkbox: {
     width: 20,
     height: 20,
   },
-  checkboxLabel: {
+  termsText: {
     marginLeft: 8,
     fontSize: 14,
     color: '#333',
   },
-  forgotPassword: {
-    color: '#E84B8A',
-    fontSize: 14,
+  termsLink: {
+    color: '#333',
     textDecorationLine: 'underline',
+    fontWeight: 'bold',
   },
-  button: {
+  signUpButton: {
     backgroundColor: '#E84B8A',
     borderRadius: 30,
     height: 56,
@@ -215,10 +194,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 24,
   },
-  buttonDisabled: {
-    opacity: 0.7,
-  },
-  buttonText: {
+  signUpButtonText: {
     color: 'white',
     fontSize: 16,
     fontWeight: '600',
@@ -256,10 +232,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#333',
   },
-  signupLink: {
+  signInLink: {
     fontSize: 14,
     color: '#333',
     fontWeight: 'bold',
     textDecorationLine: 'underline',
   },
 });
+
+export default SignUpScreen;

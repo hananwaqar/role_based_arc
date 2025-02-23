@@ -1,8 +1,13 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { ManagerHomeScreen, NewsListScreen, SettingScreen } from '@src/screens';
 import { TabScreen, ManagerTabParamList } from '../appNavigation.type';
+import { HomeStack } from '../stacks/HomeStack';
+import { NewsStack } from '../stacks/NewsStack';
+import { AnalyticsStack } from '../stacks/AnalyticsStack';
+import { SettingsStack } from '../stacks/SettingsStack';
+import { Icons } from '@src/assets';
+import { IconComponent } from '@src/components/IconComponent';
 
 const Tab = createBottomTabNavigator<ManagerTabParamList>();
 
@@ -17,25 +22,25 @@ export const ManagerTabs = () => {
     >
       <Tab.Screen
         name={TabScreen.HOME}
-        component={ManagerHomeScreen}
+        component={HomeStack}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Icon name="home" size={size} color={color} />
+            <IconComponent icon={Icons.home} />
           ),
         }}
       />
       <Tab.Screen
         name={TabScreen.NEWS}
-        component={NewsListScreen}
+        component={NewsStack}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Icon name="newspaper" size={size} color={color} />
+            <IconComponent icon={Icons.calendar} />
           ),
         }}
       />
-      <Tab.Screen
+    {/*   <Tab.Screen
         name={TabScreen.ANALYTICS}
-        component={NewsListScreen}
+        component={AnalyticsStack}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Icon name="chart-bar" size={size} color={color} />
@@ -44,13 +49,13 @@ export const ManagerTabs = () => {
       />
       <Tab.Screen
         name={TabScreen.SETTINGS}
-        component={SettingScreen}
+        component={SettingsStack}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Icon name="cog" size={size} color={color} />
           ),
         }}
-      />
+      /> */}
     </Tab.Navigator>
   );
 }; 

@@ -8,17 +8,23 @@ import {
 import { useSelector } from 'react-redux';
 
 import {
-  LoginScreen,
   NetworkLoggerScreen,
   NewsListScreen,
+  SignInScreen,
 } from '@src/screens';
-import { isForceUpdate, selectUserRole, selectIsAuthenticated } from '@src/store';
+import {
+  isForceUpdate,
+  selectUserRole,
+  selectIsAuthenticated,
+} from '@src/store';
 
 import { NavStackParams, Screen } from './appNavigation.type';
 import { ForUpdateStack } from './ForceupdateStack';
 import { AdminTabs } from './tabs/AdminTabs';
 import { ManagerTabs } from './tabs/ManagerTabs';
 import { UserTabs } from './tabs/UserTabs';
+import AuthSelectionScreen from '@src/screens/auth/AuthSelectionScreen';
+import SignUpScreen from '@src/screens/auth/SignUpScreen';
 
 export const navigationRef =
   React.createRef<NavigationContainerRef<NavStackParams>>();
@@ -35,7 +41,9 @@ const screenOptions: NativeStackNavigationOptions = {
 
 const AuthNavigator = () => (
   <AuthStack.Navigator screenOptions={screenOptions}>
-    <AuthStack.Screen name={Screen.LOGIN} component={LoginScreen} />
+    <AuthStack.Screen name={Screen.SELECTION} component={AuthSelectionScreen} />
+    <AuthStack.Screen name={Screen.LOGIN} component={SignInScreen} />
+    <AuthStack.Screen name={Screen.SIGNUP} component={SignUpScreen} />
   </AuthStack.Navigator>
 );
 
@@ -49,7 +57,7 @@ const UserNavigator = () => (
 const ManagerNavigator = () => (
   <ManagerStack.Navigator screenOptions={screenOptions}>
     <ManagerStack.Screen name={Screen.MANAGER_HOME} component={ManagerTabs} />
-    <ManagerStack.Screen name={Screen.NEWS_DETAIL} component={NewsListScreen} />
+   
   </ManagerStack.Navigator>
 );
 
@@ -58,7 +66,10 @@ const AdminNavigator = () => (
     <AdminStack.Screen name={Screen.ADMIN_HOME} component={AdminTabs} />
     <AdminStack.Screen name={Screen.NEWS_DETAIL} component={NewsListScreen} />
     {__DEV__ && (
-      <AdminStack.Screen name={Screen.NETWORK_CHECK} component={NetworkLoggerScreen} />
+      <AdminStack.Screen
+        name={Screen.NETWORK_CHECK}
+        component={NetworkLoggerScreen}
+      />
     )}
   </AdminStack.Navigator>
 );
@@ -75,7 +86,7 @@ export const AppNavigation = () => {
   if (!isAuthenticated) {
     return <AuthNavigator />;
   }
-  
+
   switch (userRole) {
     case 'admin':
       return <AdminNavigator />;
